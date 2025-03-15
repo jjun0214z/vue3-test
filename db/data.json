@@ -1,14 +1,11 @@
 {
-  "users": [
-    {
-      "id": "315c3890-dd39-4609-8ff6-15d169f2b28e",
-      "name": "Karen43",
-      "email": "Emmalee_Schneider@gmail.com"
-    },
-    {
-      "id": "f1380927-f68a-427f-b535-dce5317ddeb0",
-      "name": "Alyce68",
-      "email": "Shad_Leffler76@yahoo.com"
-    }
-  ]
+  "posts": [
+    { "id": 1, "title": "첫 번째 포스트", "content": "안녕하세요!" },
+    { "id": 2, "title": "두 번째 포스트", "content": "json-server를 사용해 보세요!" }
+  ],
+  "comments": [
+    { "id": 1, "postId": 1, "content": "좋은 포스트입니다!" },
+    { "id": 2, "postId": 2, "content": "유용한 정보네요!" }
+  ],
+  "profile": { "name": "홍길동" }
 }
