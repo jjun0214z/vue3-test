@@ -1,74 +1,54 @@
+<template>
+  <div class="todo-list-container">
+    <header class="header">
+      <h1 class="logo">TodoList</h1>
+      <RouterLink to="/write" class="write-button">글쓰기</RouterLink>
+    </header>
+    <LoadingComponent v-if="todoStore.loading" />
+    <TodoList v-else :todos="todoStore.todos" />
+  </div>
+</template>
+
 <script setup lang="ts">
-import type { AxiosResponse } from 'axios'
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
+import { useTodosStore } from '@/stores/useTodos'
+import LoadingComponent from './components/common/LoadingComponent.vue'
+import TodoList from './components/TodoList.vue'
 
-interface IData {
-  id: string
-  title: string
-  content: string
-}
-
-const instance = getCurrentInstance()
-const list = ref<IData[]>([])
-
-const fetchData = async () => {
-  try {
-    const res: AxiosResponse<IData[]> | undefined =
-      await instance?.appContext.config.globalProperties.$axios({
-        url: '/posts',
-        method: 'get',
-      })
-
-    list.value = res?.data || []
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const updatePosts = async (data: { title: string; content: string }) => {
-  try {
-    const res: AxiosResponse<IData> | undefined =
-      await instance?.appContext.config.globalProperties.$axios({
-        url: '/posts',
-        method: 'post',
-        data,
-      })
-
-    if (res?.status === 201) {
-      list.value = [...list.value, res.data]
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
+const todoStore = useTodosStore()
 
 onMounted(() => {
-  fetchData()
+  todoStore.fetchTodos()
 })
 </script>
 
-<template>
-  <header>
-    <div class="wrapper">
-      <button
-        @click="
-          updatePosts({
-            title: '새로운 포스트',
-            content: '이것은 새로운 포스트입니다.',
-          })
-        "
-      >
-        추가
-      </button>
-      <ul>
-        <li v-for="item in list" :key="item.id">{{ item }}</li>
-      </ul>
+<style scoped>
+.todo-list-container {
+  padding: 16px;
+  font-family: Arial, sans-serif;
+}
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
-</template>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.write-button {
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+</style>

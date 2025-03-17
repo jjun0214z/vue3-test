@@ -15,7 +15,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // API 서버 주소
+        target: 'https://67d7e9329d5e3a10152c84bd.mockapi.io', // API 서버 주소
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // 필요에 따라 경로 재작성
       },
