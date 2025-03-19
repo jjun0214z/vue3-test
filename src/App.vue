@@ -1,21 +1,34 @@
 <template>
-  <div class="todo-list-container">
-    <header class="header">
-      <h1 class="logo">TodoList</h1>
-      <RouterLink to="/write" class="write-button">글쓰기</RouterLink>
-    </header>
-    <LoadingComponent v-if="todoStore.loading" />
-    <TodoList v-else :todos="todoStore.todos" />
-  </div>
+  <template v-if="currentPath === '/'">
+    <div class="todo-list-container">
+      <header class="header">
+        <h1 class="logo">TodoList</h1>
+        <RouterLink to="/write" class="write-button">글쓰기</RouterLink>
+      </header>
+      <LoadingComponent v-if="todoStore.loading" />
+      <TodoList v-else :todos="todoStore.todos" />
+    </div>
+  </template>
+  <RouterView />
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useTodosStore } from '@/stores/useTodos'
 import LoadingComponent from './components/common/LoadingComponent.vue'
 import TodoList from './components/TodoList.vue'
+import { useRoute } from 'vue-router'
 
 const todoStore = useTodosStore()
+const route = useRoute()
+const currentPath = ref(route.path)
+
+watch(
+  () => route.path,
+  (newPath) => {
+    currentPath.value = newPath
+  },
+)
 
 onMounted(() => {
   todoStore.fetchTodos()

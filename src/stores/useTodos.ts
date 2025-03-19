@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 
 export interface ITodos {
   id: number
@@ -52,14 +52,14 @@ export const useTodosStore = defineStore('todos', {
     },
 
     async createTodo(todo: Omit<ITodos, 'id' | 'createdAt'>) {
-      return await this.handleApiCall<ITodos>(async () => {
+      return await this.handleApiCall<AxiosResponse<ITodos>>(async () => {
         const response = await axios({
           method: 'post',
-          url: 'https://api.example.com/todos',
+          url: '/api/todos',
           data: todo,
         })
         this.todos.push(response.data)
-        return response.data
+        return response
       })
     },
 
@@ -67,7 +67,7 @@ export const useTodosStore = defineStore('todos', {
       return await this.handleApiCall<ITodos>(async () => {
         const response = await axios({
           method: 'put',
-          url: `https://api.example.com/todos/${todo.id}`,
+          url: `/api/todos/${todo.id}`,
           data: todo,
         })
         const index = this.todos.findIndex((t) => t.id === todo.id)
@@ -82,7 +82,7 @@ export const useTodosStore = defineStore('todos', {
       return await this.handleApiCall<void>(async () => {
         await axios({
           method: 'delete',
-          url: `https://api.example.com/todos/${todoId}`,
+          url: `/api/todos/${todoId}`,
         })
         this.todos = this.todos.filter((todo) => todo.id !== todoId)
       })
