@@ -1,6 +1,6 @@
 <template>
   <div class="todo-form">
-    <h1 class="form-title">Todo 추가</h1>
+    <h1 class="form-title">Add Todo</h1>
     <form @submit.prevent="addTodo">
       <TodoWrite @update-todo="handleUpdateTodo">
         <button type="submit" class="submit-button">추가하기</button>
@@ -61,6 +61,7 @@ const goToList = () => {
   margin-bottom: 20px;
   font-size: 24px;
   color: #007bff;
+  font-weight: bold;
 }
 
 .submit-button,
