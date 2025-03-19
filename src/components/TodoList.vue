@@ -3,7 +3,6 @@
     <li v-for="todo in todos" :key="todo.id" class="todo-item">
       <RouterLink :to="`/todo/${todo.id}`" class="todo-link">
         <h2 class="todo-title">{{ todo.title }}</h2>
-        <p class="todo-author">작성자: {{ todo.name }}</p>
         <p class="todo-content">{{ todo.contents }}</p>
         <p class="todo-time">{{ formatDate(todo.createdAt) }}</p>
       </RouterLink>

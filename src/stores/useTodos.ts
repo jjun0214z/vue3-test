@@ -6,7 +6,6 @@ export interface ITodos {
   createdAt: string
   title: string
   contents: string
-  name: string
 }
 
 export interface ITodosState {

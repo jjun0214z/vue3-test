@@ -30,7 +30,6 @@ const addTodo = async () => {
   const res = await todoStore.createTodo({
     title: todoTitle.value,
     contents: todoContent.value,
-    name: '박준민',
   })
   if (res?.status === 201) {
     alert('할일이 등록되었습니다.')
