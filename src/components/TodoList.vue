@@ -1,5 +1,5 @@
 <template>
-  <ul class="todo-list">
+  <ul class="todo-list" v-if="todos.length > 0">
     <li v-for="todo in todos" :key="todo.id" class="todo-item">
       <div class="todo-header">
         <RouterLink :to="`/todo/${todo.id}`" class="todo-link">
@@ -14,31 +14,32 @@
       <p class="todo-time">{{ formatDate(todo.createdAt) }}</p>
     </li>
   </ul>
+  <NoTodoList v-else />
 </template>
 
 <script setup lang="ts">
-import type { ITodos } from '@/stores/useTodos'
+import { useTodosStore, type ITodos } from '@/stores/useTodos'
+import NoTodoList from './common/NoTodoList.vue'
 
 interface IProps {
   todos: ITodos[]
 }
 
 const { todos } = defineProps<IProps>()
+const todoStore = useTodosStore()
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleString()
 }
 
-// 수정 및 삭제 메서드 정의
 const editTodo = (id: number) => {
   // 수정 로직 구현
   console.log(`수정할 투두 ID: ${id}`)
 }
 
 const deleteTodo = (id: number) => {
-  // 삭제 로직 구현
-  console.log(`삭제할 투두 ID: ${id}`)
+  todoStore.deleteTodo(id)
 }
 </script>
 

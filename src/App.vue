@@ -6,7 +6,7 @@
         <RouterLink to="/write" class="write-button">글쓰기</RouterLink>
       </header>
       <LoadingComponent v-if="todoStore.loading" />
-      <TodoList v-else :todos="todoStore.todos" />
+      <TodoList :todos="todoStore.todos || []" />
     </div>
   </template>
   <RouterView />
@@ -48,6 +48,7 @@ onMounted(() => {
   padding: 16px;
   background-color: #f8f9fa;
   border-radius: 8px;
+  border: 1px solid #dee2e6;
 }
 
 .logo {
