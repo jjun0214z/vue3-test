@@ -14,16 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import TodoWrite from '../TodoWrite.vue'
 import { useTodosStore, type ITodos } from '@/stores/useTodos'
 import { onMounted, ref } from 'vue'
 
 const router = useRouter()
-const route = useRoute()
 const todoStore = useTodosStore()
 const todoTitle = ref('')
 const todoContent = ref('')
+const todoId = String(router.currentRoute.value.params.id)
 
 const handleUpdateTodo = ({ title, contents }: Omit<ITodos, 'id' | 'createdAt'>) => {
   todoTitle.value = title
@@ -32,7 +32,7 @@ const handleUpdateTodo = ({ title, contents }: Omit<ITodos, 'id' | 'createdAt'>)
 
 const editTodo = async () => {
   const res = await todoStore.updateTodo({
-    id: Number(route.params.id),
+    id: todoId,
     title: todoTitle.value,
     contents: todoContent.value,
   })
@@ -48,8 +48,8 @@ const goToList = () => {
 }
 
 onMounted(async () => {
-  if (route.params.id) {
-    const todoData = await todoStore.fetchTodoById(Number(route.params.id))
+  if (todoId) {
+    const todoData = await todoStore.fetchTodoById(todoId)
     if (todoData) {
       const { title, contents } = todoData
       todoTitle.value = title

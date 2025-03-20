@@ -2,7 +2,7 @@
   <ul class="todo-list" v-if="todos.length > 0">
     <li v-for="todo in todos" :key="todo.id" class="todo-item">
       <div class="todo-header">
-        <RouterLink :to="`/todo/${todo.id}`" class="todo-link">
+        <RouterLink :to="`/detail/${todo.id}`" class="todo-link">
           <h2 class="todo-title">{{ todo.title }}</h2>
         </RouterLink>
         <div class="todo-actions">
@@ -34,14 +34,14 @@ const formatDate = (dateString: string) => {
   return date.toLocaleString()
 }
 
-const editTodo = (id: number) => {
+const editTodo = (id: string) => {
   router.push({
     name: 'todoEdit',
     params: { id },
   })
 }
 
-const deleteTodo = (id: number) => {
+const deleteTodo = (id: string) => {
   todoStore.deleteTodo(id)
 }
 </script>

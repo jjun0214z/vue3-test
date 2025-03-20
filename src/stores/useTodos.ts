@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axios, { type AxiosResponse } from 'axios'
 
 export interface ITodos {
-  id: number
+  id: string
   createdAt: string
   title: string
   contents: string
@@ -49,7 +49,7 @@ export const useTodosStore = defineStore('todos', {
         return response.data
       })
     },
-    async fetchTodoById(todoId: number): Promise<ITodos | null> {
+    async fetchTodoById(todoId: string): Promise<ITodos | null> {
       return await this.handleApiCall<ITodos>(async () => {
         const response = await axios({
           method: 'get',
@@ -97,13 +97,15 @@ export const useTodosStore = defineStore('todos', {
       })
     },
 
-    async deleteTodo(todoId: number) {
-      return await this.handleApiCall<void>(async () => {
-        await axios({
+    async deleteTodo(todoId: string) {
+      return await this.handleApiCall<AxiosResponse<void>>(async () => {
+        const response = await axios({
           method: 'delete',
           url: `/api/todos/${todoId}`,
         })
         this.todos = this.todos.filter((todo) => todo.id !== todoId)
+
+        return response
       })
     },
   },
