@@ -6,7 +6,7 @@
         <RouterLink to="/write" class="write-button">글쓰기</RouterLink>
       </header>
       <LoadingComponent v-if="todoStore.loading" />
-      <TodoList :todos="todoStore.todos || []" />
+      <TodoList v-else :todos="todoStore.todos || []" />
     </div>
   </template>
   <RouterView />

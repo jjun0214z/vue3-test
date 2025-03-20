@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { useTodosStore, type ITodos } from '@/stores/useTodos'
 import NoTodoList from './common/NoTodoList.vue'
+import router from '@/router'
 
 interface IProps {
   todos: ITodos[]
@@ -34,8 +35,10 @@ const formatDate = (dateString: string) => {
 }
 
 const editTodo = (id: number) => {
-  // 수정 로직 구현
-  console.log(`수정할 투두 ID: ${id}`)
+  router.push({
+    name: 'todoEdit',
+    params: { id },
+  })
 }
 
 const deleteTodo = (id: number) => {

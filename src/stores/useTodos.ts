@@ -49,7 +49,15 @@ export const useTodosStore = defineStore('todos', {
         return response.data
       })
     },
-
+    async fetchTodoById(todoId: number): Promise<ITodos | null> {
+      return await this.handleApiCall<ITodos>(async () => {
+        const response = await axios({
+          method: 'get',
+          url: `/api/todos/${todoId}`,
+        })
+        return response.data
+      })
+    },
     async createTodo(todo: Omit<ITodos, 'id' | 'createdAt'>) {
       return await this.handleApiCall<AxiosResponse<ITodos>>(async () => {
         const response = await axios({
@@ -62,18 +70,30 @@ export const useTodosStore = defineStore('todos', {
       })
     },
 
-    async updateTodo(todo: ITodos) {
-      return await this.handleApiCall<ITodos>(async () => {
+    async updateTodo(todo: Omit<ITodos, 'createdAt'>) {
+      const { id, title, contents } = todo
+
+      return await this.handleApiCall<AxiosResponse<ITodos>>(async () => {
         const response = await axios({
           method: 'put',
-          url: `/api/todos/${todo.id}`,
-          data: todo,
+          url: `/api/todos/${id}`,
+          data: {
+            title,
+            contents,
+          },
         })
-        const index = this.todos.findIndex((t) => t.id === todo.id)
-        if (index !== -1) {
-          this.todos[index] = response.data
+
+        if (response.status === 200) {
+          const data = response.data
+          this.todos = this.todos.map((todo) => {
+            if (todo.id === data.id) {
+              return data
+            }
+            return todo
+          })
         }
-        return response.data
+
+        return response
       })
     },
 

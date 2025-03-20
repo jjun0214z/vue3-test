@@ -11,19 +11,37 @@
 </template>
 
 <script setup lang="ts">
+import type { ITodos } from '@/stores/useTodos'
 import { onBeforeUnmount, ref, watch } from 'vue'
+
+interface IProps {
+  todo?: Omit<ITodos, 'id' | 'createdAt'>
+}
+
+const { todo } = defineProps<IProps>()
 const emit = defineEmits(['updateTodo'])
 
 const todoTitle = ref('')
 const todoContent = ref('')
 
 watch(todoTitle, (newValue) => {
-  emit('updateTodo', { title: newValue, content: todoContent.value })
+  emit('updateTodo', { title: newValue, contents: todoContent.value })
 })
 
 watch(todoContent, (newValue) => {
-  emit('updateTodo', { title: todoTitle.value, content: newValue })
+  emit('updateTodo', { title: todoTitle.value, contents: newValue })
 })
+
+watch(
+  () => todo,
+  (newValue) => {
+    if (newValue) {
+      const { title = '', contents = '' } = newValue
+      todoTitle.value = title
+      todoContent.value = contents
+    }
+  },
+)
 
 onBeforeUnmount(() => {
   todoTitle.value = ''

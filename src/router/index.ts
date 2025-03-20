@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TodoWrite from '@/components/pages/TodoWritePage.vue'
+import TodoWritePage from '@/components/pages/TodoWritePage.vue'
+import TodoEditPage from '@/components/pages/TodoEditPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,12 @@ const router = createRouter({
     {
       path: '/write',
       name: 'todoWrite',
-      component: TodoWrite,
+      component: TodoWritePage,
+    },
+    {
+      path: '/edit/:id',
+      name: 'todoEdit',
+      component: TodoEditPage,
     },
   ],
 })
